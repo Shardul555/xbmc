@@ -48,6 +48,8 @@
 #include "addons/Skin.h"
 #include "cores/RetroPlayer/guicontrols/GUIGameControl.h"
 #include "games/controllers/guicontrols/GUIGameController.h"
+#include "games/players/guicontrols/GUIControllerPanel.h"
+#include "games/players/guicontrols/GUIPlayerList.h"
 #include "input/Key.h"
 #include "pvr/guilib/GUIEPGGridContainer.h"
 #include "utils/CharsetConverter.h"
@@ -99,7 +101,9 @@ static const ControlMapping controls[] =
     {"fixedlist",         CGUIControl::GUICONTAINER_FIXEDLIST},
     {"epggrid",           CGUIControl::GUICONTAINER_EPGGRID},
     {"panel",             CGUIControl::GUICONTAINER_PANEL},
-    {"ranges",            CGUIControl::GUICONTROL_RANGES}};
+    {"ranges",            CGUIControl::GUICONTROL_RANGES},
+    {"playerlist",        CGUIControl::GUICONTAINER_PLAYER_LIST},
+    {"controllerpanel",   CGUIControl::GUICONTAINER_CONTROLLER_PANEL}};
 
 CGUIControl::GUICONTROLTYPES CGUIControlFactory::TranslateControlType(const std::string &type)
 {
@@ -1413,6 +1417,33 @@ CGUIControl* CGUIControlFactory::Create(int parentID, const CRect &rect, TiXmlEl
       pcontrol->SetClickActions(clickActions);
       pcontrol->SetFocusActions(focusActions);
       pcontrol->SetUnFocusActions(unfocusActions);
+    }
+    break;
+    case CGUIControl::GUICONTAINER_PLAYER_LIST:
+    {
+      CScroller scroller;
+      GetScroller(pControlNode, "scrolltime", scroller);
+
+      control =
+          new GAME::CGUIPlayerList(parentID, id, posX, posY, width, height, orientation, scroller);
+      GAME::CGUIPlayerList* pcontrol = static_cast<GAME::CGUIPlayerList*>(control);
+      pcontrol->LoadLayout(pControlNode);
+      pcontrol->SetPageControl(pageControl);
+      pcontrol->SetRenderOffset(offset);
+      pcontrol->SetFocusActions(focusActions);
+      pcontrol->SetUnFocusActions(unfocusActions);
+    }
+    break;
+    case CGUIControl::GUICONTAINER_CONTROLLER_PANEL:
+    {
+      control = new GAME::CGUIControllerPanel(parentID, id, posX, posY, width, height, textureFocus,
+                                              textureBackground);
+      GAME::CGUIControllerPanel* ccontrol = static_cast<GAME::CGUIControllerPanel*>(control);
+      ccontrol->LoadLayout(pControlNode);
+      ccontrol->SetPageControl(pageControl);
+      ccontrol->SetRenderOffset(offset);
+      ccontrol->SetFocusActions(focusActions);
+      ccontrol->SetUnFocusActions(unfocusActions);
     }
     break;
   case CGUIControl::GUICONTROL_TEXTBOX:

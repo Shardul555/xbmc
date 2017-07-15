@@ -12,6 +12,7 @@
 #include "controllers/ControllerManager.h"
 #include "cores/RetroPlayer/shaders/ShaderPresetFactory.h"
 #include "games/GameSettings.h"
+#include "games/players/PlayerManager.h"
 #include "profiles/ProfileManager.h"
 
 using namespace KODI;
@@ -21,13 +22,15 @@ CGameServices::CGameServices(CControllerManager& controllerManager,
                              RETRO::CGUIGameRenderManager& renderManager,
                              PERIPHERALS::CPeripherals& peripheralManager,
                              const CProfileManager& profileManager,
-                             ADDON::CAddonMgr& addons)
+                             ADDON::CAddonMgr& addons,
+                             CInputManager& inputManager)
   : m_controllerManager(controllerManager),
     m_gameRenderManager(renderManager),
     m_peripheralManager(peripheralManager),
     m_profileManager(profileManager),
     m_gameSettings(new CGameSettings()),
-    m_videoShaders(new SHADER::CShaderPresetFactory(addons))
+    m_videoShaders(new SHADER::CShaderPresetFactory(addons)),
+    m_playerManager(new CPlayerManager(peripheralManager, inputManager))
 {
 }
 

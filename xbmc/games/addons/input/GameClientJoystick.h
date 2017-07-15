@@ -71,6 +71,10 @@ public:
                         float position,
                         unsigned int motionTimeMs) override;
 
+  // Input interface
+  void SetSource(const ControllerPtr& sourceController) { m_sourceController = sourceController; }
+  const ControllerPtr& GetSource() const { return m_sourceController; }
+
   bool SetRumble(const std::string& feature, float magnitude);
 
 private:
@@ -81,6 +85,7 @@ private:
 
   // Input parameters
   std::unique_ptr<CPort> m_port;
+  ControllerPtr m_sourceController;
 };
 } // namespace GAME
 } // namespace KODI
