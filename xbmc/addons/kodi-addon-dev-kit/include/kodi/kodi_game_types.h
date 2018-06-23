@@ -263,6 +263,26 @@ typedef struct game_stream_sw_framebuffer_buffer
 typedef game_stream_video_packet game_stream_sw_framebuffer_packet;
 ///}
 
+/// @name Memory stream
+///{
+typedef struct game_stream_memory_properties
+{
+  size_t size;
+} ATTRIBUTE_PACKED game_stream_memory_properties;
+
+typedef struct game_stream_memory_buffer
+{
+  uint8_t *data;
+  size_t size;
+} ATTRIBUTE_PACKED game_stream_memory_buffer;
+
+typedef struct game_stream_memory_packet
+{
+  const uint8_t *data;
+  size_t size;
+} ATTRIBUTE_PACKED game_stream_memory_packet;
+///}
+
 /// @name Stream types
 ///{
 typedef enum GAME_STREAM_TYPE
@@ -272,6 +292,7 @@ typedef enum GAME_STREAM_TYPE
   GAME_STREAM_VIDEO,
   GAME_STREAM_HW_FRAMEBUFFER,
   GAME_STREAM_SW_FRAMEBUFFER,
+  GAME_STREAM_MEMORY,
 } GAME_STREAM_TYPE;
 
 /*!
@@ -289,6 +310,7 @@ typedef struct game_stream_properties
     game_stream_video_properties video;
     game_stream_hw_framebuffer_properties hw_framebuffer;
     game_stream_sw_framebuffer_properties sw_framebuffer;
+    game_stream_memory_properties memory;
   };
 } ATTRIBUTE_PACKED game_stream_properties;
 
@@ -302,6 +324,7 @@ typedef struct game_stream_buffer
   {
     game_stream_hw_framebuffer_buffer hw_framebuffer;
     game_stream_sw_framebuffer_buffer sw_framebuffer;
+    game_stream_memory_buffer memory;
   };
 } ATTRIBUTE_PACKED game_stream_buffer;
 
@@ -321,6 +344,7 @@ typedef struct game_stream_packet
     game_stream_video_packet video;
     game_stream_hw_framebuffer_packet hw_framebuffer;
     game_stream_sw_framebuffer_packet sw_framebuffer;
+    game_stream_memory_packet memory;
   };
 } ATTRIBUTE_PACKED game_stream_packet;
 ///}

@@ -252,6 +252,7 @@ size_t SerializeSize(void);
  *
  * \return the error, or GAME_ERROR_NO_ERROR if the game was serialized into the buffer
  */
+//! @todo: GAME_ERROR Serialize(const game_stream_memory_buffer& buffer);
 GAME_ERROR Serialize(uint8_t* data, size_t size);
 
 /*!
@@ -262,6 +263,7 @@ GAME_ERROR Serialize(uint8_t* data, size_t size);
  *
  * \return the error, or GAME_ERROR_NO_ERROR if the game deserialized
  */
+//! @todo: GAME_ERROR Deserialize(const game_stream_memory_packet& packet);
 GAME_ERROR Deserialize(const uint8_t* data, size_t size);
 
 // --- Cheat operations --------------------------------------------------------

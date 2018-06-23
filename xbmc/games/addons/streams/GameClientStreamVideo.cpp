@@ -7,6 +7,7 @@
  */
 
 #include "GameClientStreamVideo.h"
+#include "addons/kodi-addon-dev-kit/include/kodi/kodi_game_types.h"
 #include "cores/RetroPlayer/streams/RetroPlayerVideo.h"
 #include "games/addons/GameClientTranslator.h"
 #include "utils/log.h"

@@ -9,9 +9,8 @@
 #pragma once
 
 #include "IGameClientStream.h"
-#include "addons/kodi-addon-dev-kit/include/kodi/kodi_game_types.h"
 
-#include <vector>
+struct game_stream_audio_properties;
 
 namespace KODI
 {
