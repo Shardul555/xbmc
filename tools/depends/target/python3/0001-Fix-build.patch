@@ -1,0 +1,29 @@
+From 0e3e401ef51df3ad561e51bbcb290691113f49f0 Mon Sep 17 00:00:00 2001
+From: Garrett Brown <themagnificentmrb@gmail.com>
+Date: Thu, 10 Sep 2020 20:47:02 -0700
+Subject: [PATCH] Fix link error with OpenSSL 1.1.1g
+
+Error was:
+
+    libcrypto.a(threads_pthread.o): In function `fork_once_func':
+    crypto/threads_pthread.c:188: undefined reference to `pthread_atfork'
+---
+ Makefile.pre.in | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/Makefile.pre.in b/Makefile.pre.in
+index 76d58a2..99e0cec 100644
+--- a/Makefile.pre.in
++++ b/Makefile.pre.in
+@@ -227,7 +227,7 @@ LDLIBRARYDIR=   @LDLIBRARYDIR@
+ INSTSONAME=	@INSTSONAME@
+ 
+ 
+-LIBS=		@LIBS@
++LIBS=		@LIBS@ -pthread
+ LIBM=		@LIBM@
+ LIBC=		@LIBC@
+ SYSLIBS=	$(LIBM) $(LIBC)
+-- 
+2.17.1
+

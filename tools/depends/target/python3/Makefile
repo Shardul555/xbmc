@@ -1,6 +1,7 @@
 include ../../Makefile.include
 DEPS= ../../Makefile.include Makefile apple.patch crosscompile.patch android.patch \
-       modules.setup darwin_embedded.patch
+       modules.setup darwin_embedded.patch \
+       0001-Fix-build.patch \
 
 # lib name, version
 LIBNAME=Python
@@ -47,6 +48,7 @@ ifeq ($(OS),darwin_embedded)
 	cd $(PLATFORM); patch -p1 -i ../darwin_embedded.patch
 endif
 	cp modules.setup $(PLATFORM)/Modules/Setup
+	cd $(PLATFORM); patch -p1 -i ../0001-Fix-build.patch
 
 #Add -liconv as needed, and add the _scproxy module for darwin
 #  disable locale altogether for Android
