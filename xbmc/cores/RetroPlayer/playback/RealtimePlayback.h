@@ -59,7 +59,7 @@ public:
   virtual void PauseAsync() override
   {
   }
-  virtual std::string CreateSavestate() override
+  virtual std::string CreateSavestate(bool bAutosave) override
   {
     return "";
   }

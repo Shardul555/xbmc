@@ -37,7 +37,14 @@ public:
   virtual void PauseAsync() = 0; // Pauses after the following frame
 
   // Savestates
-  virtual std::string CreateSavestate() = 0; // Returns the path of savestate on success
+  /*!
+   * \brief Create a new savestate
+   * \param bAutosave True if automatic (saving was not prompted by the user),
+   *                  false if manual (user manually prompted the save)
+   * \return The path of savestate on success, or an empty string on failure
+   */
+
+  virtual std::string CreateSavestate(bool bAutosave) = 0;
   virtual bool LoadSavestate(const std::string& path) = 0;
   virtual void ResetLoadedSave() = 0;
 };

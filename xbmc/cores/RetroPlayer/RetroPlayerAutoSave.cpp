@@ -50,7 +50,7 @@ void CRetroPlayerAutoSave::Process()
 
     if (m_callback.IsAutoSaveEnabled())
     {
-      std::string savePath = m_callback.CreateSavestate();
+      std::string savePath = m_callback.CreateSavestate(true);
       if (!savePath.empty())
         CLog::Log(LOGDEBUG, "RetroPlayer[SAVE]: Saved state to %s",
                   CURL::GetRedacted(savePath).c_str());

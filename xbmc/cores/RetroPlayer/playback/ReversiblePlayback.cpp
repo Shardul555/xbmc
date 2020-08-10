@@ -16,6 +16,7 @@
 #include "games/GameServices.h"
 #include "games/GameSettings.h"
 #include "games/addons/GameClient.h"
+#include "guilib/LocalizeStrings.h"
 #include "threads/SingleLock.h"
 #include "utils/MathUtils.h"
 #include "utils/URIUtils.h"
@@ -111,7 +112,7 @@ void CReversiblePlayback::PauseAsync()
   m_gameLoop.PauseAsync();
 }
 
-std::string CReversiblePlayback::CreateSavestate()
+std::string CReversiblePlayback::CreateSavestate(bool bAutosave)
 {
   const size_t memorySize = m_gameClient->SerializeSize();
 
@@ -126,7 +127,11 @@ std::string CReversiblePlayback::CreateSavestate()
   }
 
   std::string label = "";
-  if (!m_loadedSavestatePath.empty())
+  if (bAutosave)
+  {
+    label = g_localizeStrings.Get(35255); // "Autosave"
+  }
+  else if (!m_loadedSavestatePath.empty())
   {
     std::unique_ptr<ISavestate> loadedSavestate = m_savestateDatabase->CreateSavestate();
     if (m_savestateDatabase->GetSavestate(m_loadedSavestatePath, *loadedSavestate))
@@ -143,7 +148,7 @@ std::string CReversiblePlayback::CreateSavestate()
 
   std::unique_ptr<ISavestate> savestate = m_savestateDatabase->CreateSavestate();
 
-  savestate->SetType(SAVE_TYPE::AUTO);
+  savestate->SetType(bAutosave ? SAVE_TYPE::AUTO : SAVE_TYPE::MANUAL);
   savestate->SetLabel(label);
   savestate->SetCreated(now);
   savestate->SetGameFileName(gameFileName);

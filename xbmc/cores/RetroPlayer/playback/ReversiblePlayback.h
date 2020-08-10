@@ -67,7 +67,7 @@ public:
   virtual double GetSpeed() const override;
   virtual void SetSpeed(double speedFactor) override;
   virtual void PauseAsync() override;
-  virtual std::string CreateSavestate() override;
+  virtual std::string CreateSavestate(bool bAutosave) override;
   virtual bool LoadSavestate(const std::string& path) override;
   virtual void ResetLoadedSave() override
   {

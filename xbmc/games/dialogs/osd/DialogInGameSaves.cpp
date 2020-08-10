@@ -12,6 +12,8 @@
 #include "cores/RetroPlayer/savestates/SavestateDatabase.h"
 #include "cores/RetroPlayer/guibridge/GUIGameRenderManager.h"
 #include "cores/RetroPlayer/guibridge/GUIGameSettingsHandle.h"
+#include "games/GameServices.h"
+#include "games/GameSettings.h"
 #include "guilib/LocalizeStrings.h"
 #include "guilib/WindowIDs.h"
 #include "ServiceBroker.h"
@@ -19,6 +21,7 @@
 #include "settings/MediaSettings.h"
 #include "utils/log.h"
 //#include "utils/Variant.h"
+#include "ServiceBroker.h"
 
 using namespace KODI;
 using namespace GAME;
@@ -52,8 +55,11 @@ void CDialogInGameSaves::InitSavedGames()
   auto gameSettings = CServiceBroker::GetGameRenderManager().RegisterGameSettingsDialog();
 
   // save current game
-  IPlayback* playback = gameSettings->GetPlayback();
-  playback->CreateSavestate();
+  if (CServiceBroker::GetGameServices().GameSettings().AutosaveEnabled())
+  {
+    IPlayback* playback = gameSettings->GetPlayback();
+    playback->CreateSavestate(true);
+  }
 
   CSavestateDatabase db;
   db.GetSavestatesNav(m_items, gameSettings->GetPlayingGame(), gameSettings->GameClientID());
@@ -93,8 +99,8 @@ void CDialogInGameSaves::OnClickAction()
 
     if (savePath.empty())
     {
-      playback->ResetLoadedSave();
-      gameSettings->ResetGame();
+      playback->CreateSavestate(false);
+      InitSavedGames();
     }
     else
       playback->LoadSavestate(savePath);
