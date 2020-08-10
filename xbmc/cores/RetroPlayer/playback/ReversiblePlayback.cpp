@@ -8,6 +8,7 @@
 
 #include "ReversiblePlayback.h"
 #include "ServiceBroker.h"
+#include "addons/AddonVersion.h"
 #include "cores/RetroPlayer/rendering/RPRenderManager.h"
 #include "cores/RetroPlayer/savestates/ISavestate.h"
 #include "cores/RetroPlayer/savestates/SavestateDatabase.h"
