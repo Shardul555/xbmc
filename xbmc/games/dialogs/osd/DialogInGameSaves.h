@@ -27,19 +27,16 @@ protected:
   void PreInit() override;
   void GetItems(CFileItemList& items) override;
   void OnItemFocus(unsigned int index) override;
+  void OnClickAction(unsigned int index) override;
+  void OnContextMenu(unsigned int index) override;
   unsigned int GetFocusedItem() const override;
   void PostExit() override;
-  void OnClickAction() override;
 
 private:
   void InitSavedGames();
 
-  static void GetProperties(const CFileItem& item,
-                            std::string& videoFilter,
-                            std::string& description);
-
-  CFileItemList m_items;
-  unsigned int m_focusedItemIndex = false;
+  CFileItemList m_savestates;
+  unsigned int m_focusedItemIndex = 0;
 };
 } // namespace GAME
 } // namespace KODI

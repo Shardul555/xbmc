@@ -49,10 +49,10 @@ protected:
   virtual void PreInit() = 0;
   virtual void GetItems(CFileItemList& items) = 0;
   virtual void OnItemFocus(unsigned int index) = 0;
+  virtual void OnClickAction(unsigned int index) {}
+  virtual void OnContextMenu(unsigned int index) {}
   virtual unsigned int GetFocusedItem() const = 0;
   virtual void PostExit() = 0;
-  // override this to do something when an item is selected
-  virtual void OnClickAction() {}
 
   void OnDescriptionChange(const std::string& description);
 

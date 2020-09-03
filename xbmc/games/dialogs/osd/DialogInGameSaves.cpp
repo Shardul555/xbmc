@@ -37,7 +37,7 @@ std::string CDialogInGameSaves::GetHeading()
 
 void CDialogInGameSaves::PreInit()
 {
-  m_items.Clear();
+  m_savestates.Clear();
 
   InitSavedGames();
 
@@ -50,7 +50,7 @@ void CDialogInGameSaves::PreInit()
   // "Save progress to new save file"
   item->SetProperty(SAVESTATE_CAPTION, g_localizeStrings.Get(15315));
 
-  m_items.AddFront(std::move(item), 0);
+  m_savestates.AddFront(std::move(item), 0);
 }
 
 void CDialogInGameSaves::InitSavedGames()
@@ -61,47 +61,61 @@ void CDialogInGameSaves::InitSavedGames()
   gameSettings->CreateSavestate(true);
 
   CSavestateDatabase db;
-  db.GetSavestatesNav(m_items, gameSettings->GetPlayingGame(), gameSettings->GameClientID());
+  db.GetSavestatesNav(m_savestates, gameSettings->GetPlayingGame(), gameSettings->GameClientID());
 
-  m_items.Sort(SortByDate, SortOrderDescending);
+  m_savestates.Sort(SortByDate, SortOrderDescending);
 }
 
 void CDialogInGameSaves::GetItems(CFileItemList& items)
 {
-  for (const auto& item : m_items)
+  for (const auto& item : m_savestates)
     items.Add(item);
 }
 
 void CDialogInGameSaves::OnItemFocus(unsigned int index)
 {
-  if (static_cast<int>(index) < m_items.Size())
+  if (static_cast<int>(index) < m_savestates.Size())
     m_focusedItemIndex = index;
 }
 
 unsigned int CDialogInGameSaves::GetFocusedItem() const
 {
-  return m_focusedControl;
+  if (static_cast<int>(m_focusedItemIndex) < m_savestates.Size())
+    return m_focusedItemIndex;
+
+  return 0;
 }
 
 void CDialogInGameSaves::PostExit()
 {
-  m_items.Clear();
+  m_savestates.Clear();
 }
 
-void CDialogInGameSaves::OnClickAction()
+void CDialogInGameSaves::OnClickAction(unsigned int index)
 {
-  if (static_cast<int>(m_focusedItemIndex) < m_items.Size())
+  if (static_cast<int>(index) < m_savestates.Size())
   {
+    CFileItemPtr savestate = m_savestates.Get(index);
+    const std::string& savePath = savestate->GetPath();
+
     auto gameSettings = CServiceBroker::GetGameRenderManager().RegisterGameSettingsDialog();
-    std::string savePath = m_items[m_focusedItemIndex]->GetPath();
 
     if (savePath.empty())
-    {
       gameSettings->CreateSavestate(false);
-    }
     else
       gameSettings->LoadSavestate(savePath);
 
     gameSettings->CloseOSD();
+  }
+}
+
+void CDialogInGameSaves::OnContextMenu(unsigned int index)
+{
+  if (static_cast<int>(index) < m_savestates.Size())
+  {
+    CFileItemPtr savestate = m_savestates.Get(index);
+
+    unsigned int i = 0;
+    i++;
   }
 }

@@ -76,21 +76,42 @@ bool CDialogGameVideoSelect::OnMessage(CGUIMessage& message)
     }
     case GUI_MSG_CLICKED:
     {
+      const int controlId = message.GetSenderId();
       const int actionId = message.GetParam1();
-      if (actionId == ACTION_SELECT_ITEM || actionId == ACTION_MOUSE_LEFT_CLICK)
+
+      switch (actionId)
       {
-        const int controlId = message.GetSenderId();
-        if (m_viewControl->HasControl(controlId))
+        case ACTION_SELECT_ITEM:
+        case ACTION_MOUSE_LEFT_CLICK:
         {
-          using namespace MESSAGING;
+          if (m_viewControl->HasControl(controlId))
+          {
+            const int index = m_viewControl->GetSelectedItem();
+            if (index >= 0)
+              OnClickAction(index);
 
-          OnClickAction();
+            // Changed from sending ACTION_SHOW_OSD to closing the dialog
+            Close();
 
-          // Changed from sending ACTION_SHOW_OSD to closing the dialog
-          Close();
-
-          return true;
+            return true;
+          }
+          break;
         }
+        case ACTION_CONTEXT_MENU:
+        case ACTION_MOUSE_RIGHT_CLICK:
+        {
+          if (m_viewControl->HasControl(controlId))
+          {
+            const int index = m_viewControl->GetSelectedItem();
+            if (index >= 0)
+              OnContextMenu(index);
+
+            return true;
+          }
+          break;
+        }
+        default:
+          break;
       }
       break;
     }
