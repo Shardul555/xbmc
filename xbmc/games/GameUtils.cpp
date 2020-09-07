@@ -7,6 +7,7 @@
  */
 
 #include "GameUtils.h"
+
 #include "FileItem.h"
 #include "ServiceBroker.h"
 #include "URL.h"
@@ -228,16 +229,16 @@ bool CGameUtils::IsStandaloneGame(const ADDON::AddonPtr& addon)
 
   switch (addon->Type())
   {
-  case ADDON_GAMEDLL:
-  {
-    return std::static_pointer_cast<GAME::CGameClient>(addon)->SupportsStandalone();
-  }
-  case ADDON_SCRIPT:
-  {
-    return addon->IsType(ADDON_GAME);
-  }
-  default:
-    break;
+    case ADDON_GAMEDLL:
+    {
+      return std::static_pointer_cast<GAME::CGameClient>(addon)->SupportsStandalone();
+    }
+    case ADDON_SCRIPT:
+    {
+      return addon->IsType(ADDON_GAME);
+    }
+    default:
+      break;
   }
 
   return false;
