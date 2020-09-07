@@ -7,7 +7,9 @@
  */
 
 #include "InputCodingTableKorean.h"
+
 #include "utils/CharsetConverter.h"
+
 #include <stdlib.h>
 
 CInputCodingTableKorean::CInputCodingTableKorean() = default;
