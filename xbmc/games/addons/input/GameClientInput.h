@@ -11,7 +11,7 @@
 #include "games/addons/GameClientSubsystem.h"
 #include "games/controllers/ControllerTypes.h"
 #include "games/controllers/types/ControllerTree.h"
-#include "peripherals/PeripheralTypes.h"
+#include "games/players/PlayerTypes.h"
 #include "utils/Observer.h"
 
 #include <map>
@@ -91,14 +91,11 @@ public:
 private:
   using PortAddress = std::string;
   using JoystickMap = std::map<PortAddress, std::unique_ptr<CGameClientJoystick>>;
-  using PortMap = std::map<JOYSTICK::IInputProvider*, CGameClientJoystick*>;
 
   // Private input helpers
   void LoadTopology();
   void SetControllerLayouts(const ControllerVector& controllers);
   void ProcessJoysticks();
-  PortMap MapJoysticks(const PERIPHERALS::PeripheralVector& peripheralJoysticks,
-                       const JoystickMap& gameClientjoysticks) const;
 
   // Private callback helpers
   bool SetRumble(const std::string& portAddress, const std::string& feature, float magnitude);
@@ -125,6 +122,10 @@ private:
    */
   JoystickMap m_joysticks;
 
+  class CAgentPtr
+  {
+  };
+
   /*!
    * \brief Map of input provider to joystick handler
    *
@@ -137,7 +138,7 @@ private:
    *
    * Not exposed to the game.
    */
-  PortMap m_portMap;
+  std::vector<CAgentPtr> m_agents;
 
   /*!
    * \brief Keyboard handler
