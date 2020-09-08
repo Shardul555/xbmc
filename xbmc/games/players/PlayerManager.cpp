@@ -20,7 +20,6 @@
 
 #include "PlayerManager.h"
 
-#include "ServiceBroker.h"
 #include "input/InputManager.h"
 #include "peripherals/Peripherals.h"
 
@@ -49,122 +48,12 @@ void CPlayerManager::Notify(const Observable& obs, const ObservableMessage msg)
   {
     case ObservableMessagePeripheralsChanged:
     {
-      PERIPHERALS::EventLockHandlePtr lock = CServiceBroker::GetPeripherals().RegisterEventLock();
-
-      ProcessJoysticks();
-
       OnJoystickEvent();
       break;
     }
     default:
       break;
   }
-}
-
-void CGameClientInput::ProcessJoysticks()
-{
-  PERIPHERALS::PeripheralVector joysticks;
-  CServiceBroker::GetPeripherals().GetPeripheralsWithFeature(joysticks,
-                                                             PERIPHERALS::FEATURE_JOYSTICK);
-
-  // Update expired joysticks
-  PortMap portMapCopy = m_portMap;
-  for (auto& it : portMapCopy)
-  {
-    JOYSTICK::IInputProvider* inputProvider = it.first;
-    CGameClientJoystick* gameJoystick = it.second;
-
-    const bool bExpired =
-        std::find_if(joysticks.begin(), joysticks.end(),
-                     [inputProvider](const PERIPHERALS::PeripheralPtr& joystick) {
-                       return inputProvider ==
-                              static_cast<JOYSTICK::IInputProvider*>(joystick.get());
-                     }) == joysticks.end();
-
-    if (bExpired)
-    {
-      gameJoystick->UnregisterInput(nullptr);
-      m_portMap.erase(inputProvider);
-    }
-  }
-
-  // Perform the port mapping
-  PortMap newPortMap = MapJoysticks(joysticks, m_joysticks);
-
-  // Update connected joysticks
-  for (auto& peripheralJoystick : joysticks)
-  {
-    // Upcast to input interface
-    JOYSTICK::IInputProvider* inputProvider = peripheralJoystick.get();
-
-    auto itConnectedPort = newPortMap.find(inputProvider);
-    auto itDisconnectedPort = m_portMap.find(inputProvider);
-
-    CGameClientJoystick* newJoystick =
-        itConnectedPort != newPortMap.end() ? itConnectedPort->second : nullptr;
-    CGameClientJoystick* oldJoystick =
-        itDisconnectedPort != m_portMap.end() ? itDisconnectedPort->second : nullptr;
-
-    if (oldJoystick != newJoystick)
-    {
-      // Unregister old input handler
-      if (oldJoystick != nullptr)
-      {
-        oldJoystick->UnregisterInput(inputProvider);
-        m_portMap.erase(itDisconnectedPort);
-      }
-
-      // Register new handler
-      if (newJoystick != nullptr)
-      {
-        newJoystick->RegisterInput(inputProvider);
-        m_portMap[inputProvider] = newJoystick;
-      }
-    }
-  }
-}
-
-CGameClientInput::PortMap CGameClientInput::MapJoysticks(
-    const PERIPHERALS::PeripheralVector& peripheralJoysticks,
-    const JoystickMap& gameClientjoysticks) const
-{
-  PortMap result;
-
-  //! @todo Preserve existing joystick ports
-
-  // Sort by order of last button press
-  PERIPHERALS::PeripheralVector sortedJoysticks = peripheralJoysticks;
-  std::sort(sortedJoysticks.begin(), sortedJoysticks.end(),
-            [](const PERIPHERALS::PeripheralPtr& lhs, const PERIPHERALS::PeripheralPtr& rhs) {
-              if (lhs->LastActive().IsValid() && !rhs->LastActive().IsValid())
-                return true;
-              if (!lhs->LastActive().IsValid() && rhs->LastActive().IsValid())
-                return false;
-
-              return lhs->LastActive() > rhs->LastActive();
-            });
-
-  unsigned int i = 0;
-  for (const auto& it : gameClientjoysticks)
-  {
-    if (i >= peripheralJoysticks.size())
-      break;
-
-    // Check topology player limit
-    const int playerLimit = m_topology->PlayerLimit();
-    if (playerLimit >= 0 && static_cast<int>(i) >= playerLimit)
-      break;
-
-    // Dereference iterators
-    const PERIPHERALS::PeripheralPtr& peripheralJoystick = sortedJoysticks[i++];
-    const std::unique_ptr<CGameClientJoystick>& gameClientJoystick = it.second;
-
-    // Map input provider to input handler
-    result[peripheralJoystick.get()] = gameClientJoystick.get();
-    gameClientJoystick->SetSource(peripheralJoystick->ControllerProfile());
-  }
-
-  return result;
 }
 
 bool CPlayerManager::OnKeyPress(const CKey& key)

@@ -95,10 +95,6 @@ private:
     void* device;
     CGameClient* gameClient;
   };
-
-  using PortMap = std::map<JOYSTICK::IInputProvider*, CGameClientJoystick*>;
-  PortMap MapJoysticks(const PERIPHERALS::PeripheralVector& peripheralJoysticks,
-                       const JoystickMap& gameClientjoysticks) const;
 };
 } // namespace GAME
 } // namespace KODI
