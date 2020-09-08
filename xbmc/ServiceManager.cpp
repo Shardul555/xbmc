@@ -162,8 +162,7 @@ bool CServiceManager::InitStageThree(const std::shared_ptr<CProfileManager>& pro
     *m_gameRenderManager,
     *m_peripherals,
     *profileManager,
-    *m_addonMgr,
-    *m_inputManager));
+    *m_addonMgr));
 
   m_contextMenuManager->Init();
 

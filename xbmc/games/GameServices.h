@@ -13,7 +13,6 @@
 #include <memory>
 #include <string>
 
-class CInputManager;
 class CProfileManager;
 
 namespace ADDON
@@ -42,7 +41,6 @@ namespace GAME
 {
 class CControllerManager;
 class CGameSettings;
-class CPlayerManager;
 
 class CGameServices
 {
@@ -51,8 +49,7 @@ public:
                 RETRO::CGUIGameRenderManager& renderManager,
                 PERIPHERALS::CPeripherals& peripheralManager,
                 const CProfileManager& profileManager,
-                ADDON::CAddonMgr& addons,
-                CInputManager& inputManager);
+                ADDON::CAddonMgr& addons);
   ~CGameServices();
 
   ControllerPtr GetController(const std::string& controllerId);
@@ -71,8 +68,6 @@ public:
 
   SHADER::CShaderPresetFactory& VideoShaders() { return *m_videoShaders; }
 
-  CPlayerManager& PlayerManager() { return *m_playerManager; }
-
 private:
   // Construction parameters
   CControllerManager& m_controllerManager;
@@ -83,7 +78,6 @@ private:
   // Game services
   std::unique_ptr<CGameSettings> m_gameSettings;
   std::unique_ptr<SHADER::CShaderPresetFactory> m_videoShaders;
-  std::unique_ptr<CPlayerManager> m_playerManager;
 };
 } // namespace GAME
 } // namespace KODI

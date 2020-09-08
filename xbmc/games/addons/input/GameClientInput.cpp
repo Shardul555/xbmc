@@ -309,20 +309,6 @@ bool CGameClientInput::HasAgent() const
   return false;
 }
 
-ControllerVector CGameClientInput::GetPlayers() const
-{
-  ControllerVector players;
-
-  for (auto it : m_portMap)
-  {
-    const auto& joystick = it.second;
-    if (joystick->GetSource())
-      players.emplace_back(joystick->GetSource());
-  }
-
-  return players;
-}
-
 bool CGameClientInput::OpenKeyboard(const ControllerPtr& controller)
 {
   using namespace JOYSTICK;
@@ -690,7 +676,6 @@ CGameClientInput::PortMap CGameClientInput::MapJoysticks(
 
     // Map input provider to input handler
     result[peripheralJoystick.get()] = gameClientJoystick.get();
-    gameClientJoystick->SetSource(peripheralJoystick->ControllerProfile());
   }
 
   return result;

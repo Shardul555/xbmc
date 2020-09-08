@@ -163,9 +163,7 @@ const CWindowTranslator::WindowMapByName CWindowTranslator::WindowMappingByName 
     {"gameadvancedsettings", WINDOW_DIALOG_GAME_ADVANCED_SETTINGS},
     {"gamevideorotation", WINDOW_DIALOG_GAME_VIDEO_ROTATION},
     {"ingamesaves", WINDOW_DIALOG_IN_GAME_SAVES},
-    {"gamesaves", WINDOW_DIALOG_GAME_SAVES},
-    {"gameplayers", WINDOW_DIALOG_GAME_PLAYERS},
-};
+    {"gamesaves", WINDOW_DIALOG_GAME_SAVES}};
 
 namespace
 {
