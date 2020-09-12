@@ -1,6 +1,8 @@
 addons/audioencoder.kodi.builtin.aac/*
 addons/audioencoder.kodi.builtin.wma/*
 addons/game.controller.*/*
+addons/game.libretro/*
+addons/game.shader.presets/*
 addons/kodi.audiodecoder/*
 addons/kodi.game/*
 addons/kodi.imagedecoder/*
