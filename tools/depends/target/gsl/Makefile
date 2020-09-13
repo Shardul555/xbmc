@@ -15,7 +15,7 @@ DEPS = ../../Makefile.include Makefile
 
 # lib name, version
 LIBNAME=gsl
-VERSION=2.0.0-p0
+VERSION=2.1.0
 SOURCE=v$(VERSION)
 ARCHIVE=$(SOURCE).tar.gz
 
@@ -45,7 +45,7 @@ else
 endif
 
 # TODO
-BASE_URL := https://github.com/hunter-packages/Microsoft.GSL/archive
+BASE_URL := https://github.com/microsoft/GSL/archive
 
 all: .installed-$(PLATFORM)
 
