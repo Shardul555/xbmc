@@ -13,7 +13,7 @@ DEPS = ../../Makefile.include Makefile
 
 # lib name, version
 LIBNAME=filecoin
-VERSION=bd51e139a00e2c458ccc72758a4695165ca918ff
+VERSION=f9c5c61b08a981eb49864a3b7d86e3d0a6ff07ab
 SOURCE=$(VERSION)
 ARCHIVE=$(SOURCE).tar.gz
 
