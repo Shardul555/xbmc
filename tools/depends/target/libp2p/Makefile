@@ -13,7 +13,7 @@ DEPS = ../../Makefile.include Makefile
 
 # lib name, version
 LIBNAME=libp2p
-VERSION=ae812fdc2e7fced6b5300edd046eec1cece45c73
+VERSION=37f51986b9170d4bf643197a3cff4ea88c684b4b
 SOURCE=$(VERSION)
 ARCHIVE=$(SOURCE).tar.gz
 
