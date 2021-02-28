@@ -9,5 +9,4 @@ IF ERRORLEVEL 1 (
 )
 CALL make-addons.bat %*
 CALL make-addons.bat ^game\.libretro$
-CALL make-addons.bat ^game\.shader\.presets$
 POPD
