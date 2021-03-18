@@ -13,6 +13,8 @@ BASE_URL=https://www.openssl.org/source
 ifeq ($(OS), linux)
   TARGETOPT=--with-zlib-include=$(PREFIX)/include --with-zlib-lib=$(PREFIX)/lib
   OPENSSLPLATFORM=linux-$(MESON_CPU)
+  # OpenSSL now uses pthread_atfork(), and this requires -lpthread on Linux to link against
+  export LDFLAGS+= -lpthread
 endif
 ifeq ($(OS), android)
   TARGETOPT=--with-zlib-include=$(PREFIX)/include --with-zlib-lib=$(PREFIX)/lib -D__ANDROID_API__=$(NDK_LEVEL)
