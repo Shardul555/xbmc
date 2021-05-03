@@ -1,11 +1,12 @@
 include ../../Makefile.include
-DEPS= ../../Makefile.include Makefile 0001-fix-c++17-support.patch
+DEPS= ../../Makefile.include Makefile
 
 # lib name, version
 LIBNAME=p8-platform
-VERSION=2.1.0.1
-SOURCE=$(LIBNAME)-$(VERSION)
+VERSION=master
+SOURCE=master
 ARCHIVE=$(SOURCE).tar.gz
+BASE_URL=https://github.com/Pulse-Eight/platform/archive
 
 LIBDYLIB=$(PLATFORM)/build/lib$(LIBNAME).a
 
@@ -17,7 +18,6 @@ $(TARBALLS_LOCATION)/$(ARCHIVE):
 $(PLATFORM): $(TARBALLS_LOCATION)/$(ARCHIVE) $(DEPS)
 	rm -rf $(PLATFORM); mkdir -p $(PLATFORM)/build
 	cd $(PLATFORM); $(ARCHIVE_TOOL) $(ARCHIVE_TOOL_FLAGS) $(TARBALLS_LOCATION)/$(ARCHIVE)
-	cd $(PLATFORM); patch -p1 -i ../0001-fix-c++17-support.patch
 	cd $(PLATFORM)/build; $(CMAKE) -DBUILD_SHARED_LIBS=0 -DCMAKE_INSTALL_LIBDIR=$(PREFIX)/lib ..
 
 $(LIBDYLIB): $(PLATFORM)
