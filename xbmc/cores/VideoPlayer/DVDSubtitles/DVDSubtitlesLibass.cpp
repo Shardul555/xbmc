@@ -44,7 +44,7 @@ static void libass_log(int level, const char *fmt, va_list args, void *data)
   if(level >= 5)
     return;
   std::string log = StringUtils::FormatV(fmt, args);
-  CLog::Log(LOGDEBUG, "CDVDSubtitlesLibass: [ass] %s", log.c_str());
+  CLog::Log(LOGDEBUG, "CDVDSubtitlesLibass: [ass] {}", log.c_str());
 }
 
 CDVDSubtitlesLibass::CDVDSubtitlesLibass()
@@ -136,7 +136,7 @@ bool CDVDSubtitlesLibass::CreateTrack(char* buf, size_t size)
   CSingleLock lock(m_section);
   if(!m_library)
   {
-    CLog::Log(LOGERROR, "CDVDSubtitlesLibass: %s - No ASS library struct", __FUNCTION__);
+    CLog::Log(LOGERROR, "CDVDSubtitlesLibass: {} - No ASS library struct", __FUNCTION__);
     return false;
   }
 
@@ -155,7 +155,8 @@ ASS_Image* CDVDSubtitlesLibass::RenderImage(int frameWidth, int frameHeight, int
   CSingleLock lock(m_section);
   if(!m_renderer || !m_track)
   {
-    CLog::Log(LOGERROR, "CDVDSubtitlesLibass: %s - Missing ASS structs(m_track or m_renderer)", __FUNCTION__);
+    CLog::Log(LOGERROR, "CDVDSubtitlesLibass: {} - Missing ASS structs(m_track or m_renderer)",
+              __FUNCTION__);
     return NULL;
   }
 
@@ -176,7 +177,7 @@ ASS_Event* CDVDSubtitlesLibass::GetEvents()
   CSingleLock lock(m_section);
   if(!m_track)
   {
-    CLog::Log(LOGERROR, "CDVDSubtitlesLibass: %s -  Missing ASS structs(m_track)", __FUNCTION__);
+    CLog::Log(LOGERROR, "CDVDSubtitlesLibass: {} -  Missing ASS structs(m_track)", __FUNCTION__);
     return NULL;
   }
   return m_track->events;

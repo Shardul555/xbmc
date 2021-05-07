@@ -268,7 +268,7 @@
 
 - (void)longPlayPausePressed:(UILongPressGestureRecognizer*)sender
 {
-  CLog::Log(LOGDEBUG, "Input: play/pause long press, state: %ld", static_cast<long>(sender.state));
+  CLog::Log(LOGDEBUG, "Input: play/pause long press, state: {}", static_cast<long>(sender.state));
 }
 
 - (void)doublePlayPausePressed:(UITapGestureRecognizer*)sender

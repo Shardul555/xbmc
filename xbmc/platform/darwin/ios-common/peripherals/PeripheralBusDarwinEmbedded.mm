@@ -50,7 +50,7 @@ bool PERIPHERALS::CPeripheralBusDarwinEmbedded::InitializeProperties(CPeripheral
 
   if (peripheral.Type() != PERIPHERALS::PERIPHERAL_JOYSTICK)
   {
-    CLog::Log(LOGWARNING, "CPeripheralBusDarwinEmbedded: invalid peripheral type: %s",
+    CLog::Log(LOGWARNING, "CPeripheralBusDarwinEmbedded: invalid peripheral type: {}",
               PERIPHERALS::PeripheralTypeTranslator::TypeToString(peripheral.Type()));
     return false;
   }
@@ -60,7 +60,7 @@ bool PERIPHERALS::CPeripheralBusDarwinEmbedded::InitializeProperties(CPeripheral
   if (!GetDeviceId(peripheral.Location(), deviceId))
   {
     CLog::Log(LOGWARNING,
-              "CPeripheralBusDarwinEmbedded: failed to initialize properties for peripheral \"%s\"",
+              "CPeripheralBusDarwinEmbedded: failed to initialize properties for peripheral \"{}\"",
               peripheral.Location().c_str());
     return false;
   }
@@ -100,7 +100,7 @@ bool PERIPHERALS::CPeripheralBusDarwinEmbedded::InitializeProperties(CPeripheral
       return false;
   }
 
-  CLog::Log(LOGDEBUG, "CPeripheralBusDarwinEmbedded: Device has %u buttons and %u axes",
+  CLog::Log(LOGDEBUG, "CPeripheralBusDarwinEmbedded: Device has {} buttons and {} axes",
             joystick.ButtonCount(), joystick.AxisCount());
 
   return true;
