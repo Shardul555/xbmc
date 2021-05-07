@@ -144,7 +144,7 @@ bool CGUIWindow::LoadXML(const std::string &strPath, const std::string &strLower
     if (!StringUtils::EqualsNoCase(xmlDoc.RootElement()->Value(), "window"))
     {
       CLog::Log(LOGERROR, "XML file {} does not contain a <window> root element",
-                GetProperty("xmlfile").c_str());
+                GetProperty("xmlfile").asString());
       return false;
     }
 
@@ -585,7 +585,7 @@ bool CGUIWindow::OnMessage(CGUIMessage& message)
 
   case GUI_MSG_WINDOW_INIT:
     {
-      CLog::Log(LOGDEBUG, "------ Window Init ({}) ------", GetProperty("xmlfile").c_str());
+      CLog::Log(LOGDEBUG, "------ Window Init ({}) ------", GetProperty("xmlfile").asString());
       if (m_dynamicResourceAlloc || !m_bAllocated) AllocResources(false);
       OnInitWindow();
       return true;
@@ -594,7 +594,7 @@ bool CGUIWindow::OnMessage(CGUIMessage& message)
 
   case GUI_MSG_WINDOW_DEINIT:
     {
-      CLog::Log(LOGDEBUG, "------ Window Deinit ({}) ------", GetProperty("xmlfile").c_str());
+      CLog::Log(LOGDEBUG, "------ Window Deinit ({}) ------", GetProperty("xmlfile").asString());
       OnDeinitWindow(message.GetParam1());
       // now free the window
       if (m_dynamicResourceAlloc) FreeResources();
@@ -770,7 +770,7 @@ void CGUIWindow::AllocResources(bool forceLoad /*= false */)
               1000.f * (end - start) / freq, 1000.f * (slend - start) / freq);
   else
   {
-    CLog::Log(LOGDEBUG, "Window {} was already loaded", GetProperty("xmlfile").c_str());
+    CLog::Log(LOGDEBUG, "Window {} was already loaded", GetProperty("xmlfile").asString());
     CLog::Log(LOGDEBUG, "Alloc resources: {:.2f}ms", 1000.f * (end - start) / freq);
   }
 #endif
