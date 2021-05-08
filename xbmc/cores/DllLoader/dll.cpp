@@ -161,8 +161,8 @@ extern "C" intptr_t (*__stdcall dllGetProcAddress(HMODULE hModule, const char* f
   {
     if( dll->ResolveOrdinal(LOW_WORD(function), &address) )
     {
-      CLog::Log(LOGDEBUG, "{}({}({}), {}) => %p", __FUNCTION__, fmt::ptr(hModule), dll->GetName(),
-                LOW_WORD(function), address);
+      CLog::Log(LOGDEBUG, "{}({}({}), {}) => {}", __FUNCTION__, fmt::ptr(hModule), dll->GetName(),
+                LOW_WORD(function), fmt::ptr(address));
     }
     else if( dll->IsSystemDll() )
     {
@@ -181,16 +181,16 @@ extern "C" intptr_t (*__stdcall dllGetProcAddress(HMODULE hModule, const char* f
     else
     {
       address = NULL;
-      CLog::Log(LOGDEBUG, "{}({}({}), '{}') => %p", __FUNCTION__, fmt::ptr(hModule), dll->GetName(),
-                function, address);
+      CLog::Log(LOGDEBUG, "{}({}({}), '{}') => {}", __FUNCTION__, fmt::ptr(hModule), dll->GetName(),
+                function, fmt::ptr(address));
     }
   }
   else
   {
     if( dll->ResolveExport(function, &address) )
     {
-      CLog::Log(LOGDEBUG, "{}({}({}), '{}') => %p", __FUNCTION__, fmt::ptr(hModule), dll->GetName(),
-                function, address);
+      CLog::Log(LOGDEBUG, "{}({}({}), '{}') => {}", __FUNCTION__, fmt::ptr(hModule), dll->GetName(),
+                function, fmt::ptr(address));
     }
     else
     {
@@ -208,8 +208,8 @@ extern "C" intptr_t (*__stdcall dllGetProcAddress(HMODULE hModule, const char* f
       else
       {
         address = NULL;
-        CLog::Log(LOGDEBUG, "{}({}({}), '{}') => %p", __FUNCTION__, fmt::ptr(hModule),
-                  dll->GetName(), function, address);
+        CLog::Log(LOGDEBUG, "{}({}({}), '{}') => {}", __FUNCTION__, fmt::ptr(hModule),
+                  dll->GetName(), function, fmt::ptr(address));
       }
     }
   }

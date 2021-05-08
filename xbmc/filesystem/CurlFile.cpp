@@ -1073,7 +1073,7 @@ bool CCurlFile::Open(const CURL& url)
   ParseAndCorrectUrl(url2);
 
   std::string redactPath = CURL::GetRedacted(m_url);
-  CLog::Log(LOGDEBUG, "CurlFile::Open(%p) {}", (void*)this, redactPath.c_str());
+  CLog::Log(LOGDEBUG, "CurlFile::Open({}) {}", fmt::ptr(this), redactPath.c_str());
 
   assert(!(!m_state->m_easyHandle ^ !m_state->m_multiHandle));
   if( m_state->m_easyHandle == NULL )
@@ -1177,7 +1177,7 @@ bool CCurlFile::OpenForWrite(const CURL& url, bool bOverWrite)
   CURL url2(url);
   ParseAndCorrectUrl(url2);
 
-  CLog::Log(LOGDEBUG, "CCurlFile::OpenForWrite(%p) {}", (void*)this,
+  CLog::Log(LOGDEBUG, "CCurlFile::OpenForWrite({}) {}", fmt::ptr(this),
             CURL::GetRedacted(m_url).c_str());
 
   assert(m_state->m_easyHandle == NULL);

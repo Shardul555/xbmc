@@ -30,7 +30,7 @@ bool CDAVFile::Execute(const CURL& url)
   CURL url2(url);
   ParseAndCorrectUrl(url2);
 
-  CLog::Log(LOGDEBUG, "CDAVFile::Execute(%p) {}", (void*)this, m_url.c_str());
+  CLog::Log(LOGDEBUG, "CDAVFile::Execute({}) {}", fmt::ptr(this), m_url.c_str());
 
   assert(!(!m_state->m_easyHandle ^ !m_state->m_multiHandle));
   if( m_state->m_easyHandle == NULL )

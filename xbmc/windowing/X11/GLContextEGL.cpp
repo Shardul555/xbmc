@@ -179,8 +179,8 @@ bool CGLContextEGL::Refresh(bool force, int screen, Window glWindow, bool &newCo
 
   if (!eglMakeCurrent(m_eglDisplay, m_eglSurface, m_eglSurface, m_eglContext))
   {
-    CLog::Log(LOGERROR, "Failed to make context current %p %p %p", m_eglDisplay, m_eglSurface,
-              m_eglContext);
+    CLog::Log(LOGERROR, "Failed to make context current {} {} {}", fmt::ptr(m_eglDisplay),
+              fmt::ptr(m_eglSurface), fmt::ptr(m_eglContext));
     Destroy();
     return false;
   }
@@ -277,8 +277,8 @@ bool CGLContextEGL::CreatePB()
 
   if (!eglMakeCurrent(m_eglDisplay, m_eglSurface, m_eglSurface, m_eglContext))
   {
-    CLog::Log(LOGERROR, "Failed to make context current %p %p %p", m_eglDisplay, m_eglSurface,
-              m_eglContext);
+    CLog::Log(LOGERROR, "Failed to make context current {} {} {}", fmt::ptr(m_eglDisplay),
+              fmt::ptr(m_eglSurface), fmt::ptr(m_eglContext));
     Destroy();
     return false;
   }

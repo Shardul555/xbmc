@@ -439,8 +439,8 @@ bool CEGLContextUtils::BindContext()
 
   if (eglMakeCurrent(m_eglDisplay, m_eglSurface, m_eglSurface, m_eglContext) != EGL_TRUE)
   {
-    CLog::Log(LOGERROR, "Failed to make context current %p %p %p",
-                         m_eglDisplay, m_eglSurface, m_eglContext);
+    CLog::Log(LOGERROR, "Failed to make context current {} {} {}", fmt::ptr(m_eglDisplay),
+              fmt::ptr(m_eglSurface), fmt::ptr(m_eglContext));
     return false;
   }
 
