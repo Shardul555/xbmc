@@ -60,7 +60,7 @@ IGameClientStream* CGameClientStreams::OpenStream(const game_stream_properties& 
   RETRO::StreamPtr retroStream = m_streamManager->CreateStream(retroStreamType);
   if (!retroStream)
   {
-    CLog::Log(LOGERROR, "GAME:  Invalid RetroPlayer stream type: %$d",
+    CLog::Log(LOGERROR, "GAME:  Invalid RetroPlayer stream type: {}",
               static_cast<int>(retroStreamType));
     return nullptr;
   }
