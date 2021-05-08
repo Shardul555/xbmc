@@ -10547,7 +10547,7 @@ int CMusicDatabase::GetArtistByMatch(const CArtist& artist)
   }
   catch (...)
   {
-    CLog::Log(LOGERROR, "CMusicDatabase::{} - failed to execute %", __FUNCTION__, strSQL.c_str());
+    CLog::Log(LOGERROR, "CMusicDatabase::{} - failed to execute {}", __FUNCTION__, strSQL.c_str());
   }
   return -1;
 }
@@ -10773,7 +10773,7 @@ int CMusicDatabase::GetAlbumByMatch(const CAlbum& album)
   }
   catch (...)
   {
-    CLog::Log(LOGERROR, "CMusicDatabase::{} - failed to execute %", __FUNCTION__, strSQL.c_str());
+    CLog::Log(LOGERROR, "CMusicDatabase::{} - failed to execute {}", __FUNCTION__, strSQL.c_str());
   }
   return -1;
 }
