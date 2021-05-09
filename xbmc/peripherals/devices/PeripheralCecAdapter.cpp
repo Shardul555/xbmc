@@ -244,7 +244,7 @@ bool CPeripheralCecAdapter::InitialiseFeature(const PeripheralFeature feature)
     if (m_configuration.serverVersion < CEC_LIB_SUPPORTED_VERSION)
     {
       /* unsupported libcec version */
-      CLog::Log(LOGERROR, g_localizeStrings.Get(36040).c_str(),
+      CLog::Log(LOGERROR, g_localizeStrings.Get(36040),
                 m_cecAdapter ? m_configuration.serverVersion : -1, CEC_LIB_SUPPORTED_VERSION);
 
       // display warning: incompatible libCEC
@@ -264,7 +264,7 @@ bool CPeripheralCecAdapter::InitialiseFeature(const PeripheralFeature feature)
     else
     {
       CLog::Log(LOGDEBUG, "{} - using libCEC v{}", __FUNCTION__,
-                m_cecAdapter->VersionToString(m_configuration.serverVersion).c_str());
+                m_cecAdapter->VersionToString(m_configuration.serverVersion));
       SetVersionInfo(m_configuration);
     }
 
@@ -302,7 +302,7 @@ bool CPeripheralCecAdapter::OpenConnection(void)
 
   // open the CEC adapter
   CLog::Log(LOGDEBUG, "{} - opening a connection to the CEC adapter: {}", __FUNCTION__,
-            m_strComPort.c_str());
+            m_strComPort);
 
   // scanning the CEC bus takes about 5 seconds, so display a notification to inform users that
   // we're busy
@@ -601,7 +601,7 @@ void CPeripheralCecAdapter::SetMenuLanguage(const char* strLanguage)
   {
     strGuiLanguage = "resource.language." + strGuiLanguage;
     CApplicationMessenger::GetInstance().PostMsg(TMSG_SETLANGUAGE, -1, -1, nullptr, strGuiLanguage);
-    CLog::Log(LOGDEBUG, "{} - language set to '{}'", __FUNCTION__, strGuiLanguage.c_str());
+    CLog::Log(LOGDEBUG, "{} - language set to '{}'", __FUNCTION__, strGuiLanguage);
   }
   else
     CLog::Log(LOGWARNING, "{} - TV menu language set to unknown value '{}'", __FUNCTION__,
@@ -1586,7 +1586,7 @@ std::string CPeripheralCecAdapterUpdateThread::UpdateAudioSystemStatus(void)
     std::string ampName(m_adapter->m_cecAdapter->GetDeviceOSDName(CECDEVICE_AUDIOSYSTEM));
     CLog::Log(LOGDEBUG,
               "{} - CEC capable amplifier found ({}). volume will be controlled on the amp",
-              __FUNCTION__, ampName.c_str());
+              __FUNCTION__, ampName);
     strAmpName += ampName;
 
     // set amp present

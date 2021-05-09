@@ -499,7 +499,7 @@ bool CSettings::Load(const std::string &file)
       !Load(xmlDoc.RootElement(), updated))
   {
     CLog::Log(LOGERROR, "CSettings: unable to load settings from {}, creating new default settings",
-              file.c_str());
+              file);
     if (!Reset())
       return false;
 
@@ -609,12 +609,12 @@ bool CSettings::Initialize(const std::string &file)
   CXBMCTinyXML xmlDoc;
   if (!xmlDoc.LoadFile(file.c_str()))
   {
-    CLog::Log(LOGERROR, "CSettings: error loading settings definition from {}, Line {}\n{}",
-              file.c_str(), xmlDoc.ErrorRow(), xmlDoc.ErrorDesc());
+    CLog::Log(LOGERROR, "CSettings: error loading settings definition from {}, Line {}\n{}", file,
+              xmlDoc.ErrorRow(), xmlDoc.ErrorDesc());
     return false;
   }
 
-  CLog::Log(LOGDEBUG, "CSettings: loaded settings definition from {}", file.c_str());
+  CLog::Log(LOGDEBUG, "CSettings: loaded settings definition from {}", file);
 
   return InitializeDefinitionsFromXml(xmlDoc);
 }
@@ -1088,7 +1088,7 @@ bool CSettings::Reset()
 
   // try to delete the settings file
   if (XFILE::CFile::Exists(settingsFile, false) && !XFILE::CFile::Delete(settingsFile))
-    CLog::Log(LOGWARNING, "Unable to delete old settings file at {}", settingsFile.c_str());
+    CLog::Log(LOGWARNING, "Unable to delete old settings file at {}", settingsFile);
 
   // unload any loaded settings
   Unload();
@@ -1096,7 +1096,7 @@ bool CSettings::Reset()
   // try to save the default settings
   if (!Save())
   {
-    CLog::Log(LOGWARNING, "Failed to save the default settings to {}", settingsFile.c_str());
+    CLog::Log(LOGWARNING, "Failed to save the default settings to {}", settingsFile);
     return false;
   }
 

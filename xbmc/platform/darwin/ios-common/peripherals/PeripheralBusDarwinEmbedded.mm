@@ -61,7 +61,7 @@ bool PERIPHERALS::CPeripheralBusDarwinEmbedded::InitializeProperties(CPeripheral
   {
     CLog::Log(LOGWARNING,
               "CPeripheralBusDarwinEmbedded: failed to initialize properties for peripheral \"{}\"",
-              peripheral.Location().c_str());
+              peripheral.Location());
     return false;
   }
 

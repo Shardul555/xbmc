@@ -382,7 +382,7 @@ void CPeripherals::CreatePeripheral(CPeripheralBus& bus, const PeripheralScanRes
     else
     {
       CLog::Log(LOGDEBUG, "{} - failed to initialise peripheral on '{}'", __FUNCTION__,
-                mappedResult.m_strLocation.c_str());
+                mappedResult.m_strLocation);
     }
   }
 }
@@ -455,8 +455,8 @@ bool CPeripherals::GetMappingForDevice(const CPeripheralBus& bus,
       std::string strVendorId, strProductId;
       PeripheralTypeTranslator::FormatHexString(result.m_iVendorId, strVendorId);
       PeripheralTypeTranslator::FormatHexString(result.m_iProductId, strProductId);
-      CLog::Log(LOGDEBUG, "{} - device ({}:{}) mapped to {} (type = {})", __FUNCTION__,
-                strVendorId.c_str(), strProductId.c_str(), mapping.m_strDeviceName.c_str(),
+      CLog::Log(LOGDEBUG, "{} - device ({}:{}) mapped to {} (type = {})", __FUNCTION__, strVendorId,
+                strProductId, mapping.m_strDeviceName,
                 PeripheralTypeTranslator::TypeToString(mapping.m_mappedTo));
       result.m_mappedType = mapping.m_mappedTo;
       if (!mapping.m_strDeviceName.empty())
@@ -538,7 +538,7 @@ bool CPeripherals::LoadMappings()
         if (idArray.size() != 2)
         {
           CLog::Log(LOGERROR, "{} - ignoring node \"{}\" with invalid vendor_product attribute",
-                    __FUNCTION__, mapping.m_strDeviceName.c_str());
+                    __FUNCTION__, mapping.m_strDeviceName);
           continue;
         }
 
@@ -557,7 +557,7 @@ bool CPeripherals::LoadMappings()
     GetSettingsFromMappingsFile(currentNode, mapping.m_settings);
 
     m_mappings.push_back(mapping);
-    CLog::Log(LOGDEBUG, "{} - loaded node \"{}\"", __FUNCTION__, mapping.m_strDeviceName.c_str());
+    CLog::Log(LOGDEBUG, "{} - loaded node \"{}\"", __FUNCTION__, mapping.m_strDeviceName);
   }
 
   return true;
@@ -837,20 +837,17 @@ void CPeripherals::TestFeature(PeripheralFeature feature)
   {
     if (peripheral->TestFeature(feature))
     {
-      CLog::Log(LOGDEBUG, "PERIPHERALS: Device \"{}\" tested {} feature",
-                peripheral->DeviceName().c_str(),
+      CLog::Log(LOGDEBUG, "PERIPHERALS: Device \"{}\" tested {} feature", peripheral->DeviceName(),
                 PeripheralTypeTranslator::FeatureToString(feature));
     }
     else
     {
       if (peripheral->HasFeature(feature))
         CLog::Log(LOGDEBUG, "PERIPHERALS: Device \"{}\" failed to test {} feature",
-                  peripheral->DeviceName().c_str(),
-                  PeripheralTypeTranslator::FeatureToString(feature));
+                  peripheral->DeviceName(), PeripheralTypeTranslator::FeatureToString(feature));
       else
         CLog::Log(LOGDEBUG, "PERIPHERALS: Device \"{}\" doesn't support {} feature",
-                  peripheral->DeviceName().c_str(),
-                  PeripheralTypeTranslator::FeatureToString(feature));
+                  peripheral->DeviceName(), PeripheralTypeTranslator::FeatureToString(feature));
     }
   }
 }
