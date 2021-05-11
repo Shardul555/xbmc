@@ -55,37 +55,38 @@ std::unique_ptr<CDVDVideoCodec> CDVDFactoryCodec::CreateVideoCodec(CDVDStreamInf
     hint.externalInterfaces->GetAddonInstance(ADDON::IAddonProvider::INSTANCE_VIDEOCODEC, addonInfo, parentInstance);
     if (addonInfo && parentInstance)
     {
-      pCodec = std::make_unique<CAddonVideoCodec>(processInfo, addonInfo, parentInstance);
-      if (pCodec && pCodec->Open(hint, options))
-      {
-        return pCodec;
-      }
+      std::unique_ptr<CAddonVideoCodec> newCodec = std::make_unique<CAddonVideoCodec>(processInfo, addonInfo, parentInstance);
+      if (newCodec->Open(hint, options))
+        pCodec.reset(static_cast<CDVDVideoCodec*>(newCodec.release()));
     }
-    return nullptr;
   }
 
-  // platform specifig video decoders
-  if (!(hint.codecOptions & CODEC_FORCE_SOFTWARE))
+  // platform specifying video decoders
+  bool bTrySoftware = true;
+  if (!pCodec && (hint.codecOptions & CODEC_FORCE_SOFTWARE))
   {
     for (auto &codec : m_hwVideoCodecs)
     {
-      pCodec = CreateVideoCodecHW(codec.first, processInfo);
-      if (pCodec && pCodec->Open(hint, options))
+      std::unique_ptr<CDVDVideoCodec> newCodec = CreateVideoCodecHW(codec.first, processInfo);
+      if (newCodec->Open(hint, options))
       {
-        return pCodec;
+        pCodec = std::move(newCodec);
+        break;
       }
     }
-    if (!(hint.codecOptions & CODEC_ALLOW_FALLBACK))
-      return nullptr;
+
+    if (!pCodec && !(hint.codecOptions & CODEC_ALLOW_FALLBACK))
+      bTrySoftware = false;
   }
 
-  pCodec = std::make_unique<CDVDVideoCodecFFmpeg>(processInfo);
-  if (pCodec->Open(hint, options))
+  if (!pCodec && bTrySoftware)
   {
-    return pCodec;
+    std::unique_ptr<CDVDVideoCodecFFmpeg> newCodec = std::make_unique<CDVDVideoCodecFFmpeg>(processInfo);
+    if (newCodec->Open(hint, options))
+      pCodec.reset(static_cast<CDVDVideoCodec*>(newCodec.release()));
   }
 
-  return nullptr;
+  return pCodec;
 }
 
 std::unique_ptr<CDVDVideoCodec> CDVDFactoryCodec::CreateVideoCodecHW(const std::string& id,
