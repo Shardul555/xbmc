@@ -1,8 +1,4 @@
 cmake_minimum_required(VERSION 3.4)
-if(WIN32)
-  # Version 3.15 is required to use "PREPEND" for dependencies
-  cmake_minimum_required(VERSION 3.15)
-endif()
 project(kodi LANGUAGES CXX C ASM)
 
 if(POLICY CMP0069)
@@ -85,9 +81,6 @@ else()
   set(ENABLE_STATIC_LIBS FALSE)
 endif()
 
-# Find Boost static libraries
-set(Boost_USE_STATIC_LIBS ON)
-
 core_find_git_rev(APP_SCMID FULL)
 
 # Dynamically loaded libraries built with the project
@@ -125,12 +118,10 @@ endforeach()
 
 # Required dependencies. Keep in alphabetical order please
 set(required_deps ASS
-                  Boost
                   Cdio
                   CrossGUID
                   Curl
                   FFMPEG
-                  Filecoin
                   FlatBuffers
                   Fmt
                   FreeType
@@ -138,13 +129,9 @@ set(required_deps ASS
                   fstrcmp
                   Iconv
                   LibDvd
-                  Libp2p
-                  LMDB
-                  LZ4
                   Lzo2
                   OpenSSL>=1.0.2
                   PCRE
-                  QrCodeGen
                   RapidJSON
                   Spdlog
                   Sqlite3
