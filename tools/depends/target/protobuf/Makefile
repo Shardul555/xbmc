@@ -4,12 +4,9 @@ DEPS = ../../Makefile.include Makefile
 # lib name, version
 LIBNAME=protobuf
 LANG=cpp
-VERSION=3.15.3
-SOURCE=$(LIBNAME)-$(LANG)-$(VERSION)
+VERSION=3.7.1-p0
+SOURCE=$(LIBNAME)-$(VERSION)
 ARCHIVE=$(SOURCE).tar.gz
-
-# The compiled library
-LIBDYLIB=$(PLATFORM)/src/lib$(LIBNAME).la
 
 ifeq ($(PLATFORM),)
 	# Building stand-alone
@@ -28,13 +25,20 @@ else
 endif
 
 # TODO
-BASE_URL=https://github.com/protocolbuffers/protobuf/releases/download/v$(VERSION)
+GIT_URL=https://github.com/hunter-packages/protobuf.git
 
-CONFIGURE_OPTIONS := \
-  --prefix=$(PREFIX) \
-  --disable-maintainer-mode \
-  --disable-shared \
-  $(CONFIGURE_OPTIONS)
+# The build directory
+BUILD_DIR=$(PLATFORM)/build
+
+LIBDYLIB=$(BUILD_DIR)/lib$(LIBNAME)3.a
+
+CMAKE_OPTIONS := \
+  -DCMAKE_INSTALL_PREFIX=$(PREFIX) \
+  -Dprotobuf_BUILD_TESTS=OFF \
+  -Dprotobuf_BUILD_PROTOC_BINARIES=OFF \
+  -Dprotobuf_BUILD_SHARED_LIBS=OFF \
+  -DHUNTER_ENABLED=OFF \
+  $(CMAKE_OPTIONS)
 
 # Fix missing log dependency when linking '__android_log_write'
 # https://github.com/protocolbuffers/protobuf/issues/2719
@@ -45,7 +49,9 @@ endif
 all: .installed-$(PLATFORM)
 
 $(TARBALLS_LOCATION)/$(ARCHIVE):
-	cd $(TARBALLS_LOCATION); $(RETRIEVE_TOOL) $(RETRIEVE_TOOL_FLAGS) $(BASE_URL)/$(ARCHIVE)
+	rm -rf $(TARBALLS_LOCATION)/$(LIBNAME)
+	git clone $(GIT_URL) $(TARBALLS_LOCATION)/$(LIBNAME) -b v$(VERSION)
+	python3 $(PREFIX)/bin/git_archive_all.py -C $(TARBALLS_LOCATION)/$(LIBNAME) --force-submodules $(TARBALLS_LOCATION)/$(ARCHIVE)
 
 $(PLATFORM): $(TARBALLS_LOCATION)/$(ARCHIVE) $(DEPS)
 ifeq ($(PREFIX),)
@@ -57,15 +63,16 @@ endif
 	cd $(PLATFORM); $(ARCHIVE_TOOL) $(ARCHIVE_TOOL_FLAGS) $(TARBALLS_LOCATION)/$(ARCHIVE)
 
 $(LIBDYLIB): $(PLATFORM)
-	cd $(PLATFORM); LDFLAGS="$(LDFLAGS)" ./configure $(CONFIGURE_OPTIONS)
-	$(MAKE) -C $(PLATFORM)
+	mkdir -p "$(BUILD_DIR)"
+	cd "$(BUILD_DIR)"; $(CMAKE) $(CMAKE_OPTIONS) ..
+	$(MAKE) -C $(BUILD_DIR)
 
 .installed-$(PLATFORM): $(LIBDYLIB)
-	$(MAKE) -C $(PLATFORM) install
+	$(MAKE) -C $(BUILD_DIR) install
 	touch $@
 
 clean:
-	$(MAKE) -C $(PLATFORM) clean
+	$(MAKE) -C $(BUILD_DIR) clean
 	rm -f .installed-$(PLATFORM)
 
 distclean:

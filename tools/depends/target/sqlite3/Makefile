@@ -13,14 +13,11 @@ BASE_URL=https://github.com/hunter-packages/sqlite3/archive
 # configuration settings
 export CXXFLAGS+=-DSQLITE_ENABLE_COLUMN_METADATA=1
 export CFLAGS+=-DSQLITE_TEMP_STORE=3 -DSQLITE_DEFAULT_MMAP_SIZE=0x10000000
-CONFIGURE=cp -f $(CONFIG_SUB) $(CONFIG_GUESS) .; \
-          ./configure --prefix=$(PREFIX) --disable-shared \
-  --enable-threadsafe --disable-readline \
 
 # The build directory
-BUILDDIR=$(PLATFORM)/build
+BUILD_DIR=$(PLATFORM)/build
 
-LIBDYLIB=$(BUILDDIR)/lib$(LIBNAME)3.a
+LIBDYLIB=$(BUILD_DIR)/lib$(LIBNAME)3.a
 
 CMAKE_OPTIONS := \
   -DCMAKE_INSTALL_PREFIX=$(PREFIX) \
@@ -40,16 +37,16 @@ ifneq ($(OS),android)
 endif
 
 $(LIBDYLIB): $(PLATFORM)
-	mkdir -p $(BUILDDIR)
-	cd $(BUILDDIR); $(CMAKE) $(CMAKE_OPTIONS) ..
-	$(MAKE) -C $(BUILDDIR)
+	mkdir -p $(BUILD_DIR)
+	cd $(BUILD_DIR); $(CMAKE) $(CMAKE_OPTIONS) ..
+	$(MAKE) -C $(BUILD_DIR)
 
 .installed-$(PLATFORM): $(LIBDYLIB)
-	$(MAKE) -C $(BUILDDIR) install
+	$(MAKE) -C $(BUILD_DIR) install
 	touch $@
 
 clean:
-	$(MAKE) -C $(PLATFORM) clean
+	$(MAKE) -C $(BUILD_DIR) clean
 	rm -f .installed-$(PLATFORM)
 
 distclean::
