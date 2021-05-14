@@ -29,6 +29,7 @@ DEPENDS += \
   libp2p \
   protobuf \
   sqlite-modern-cpp \
+  yaml-cpp \
 
 # Filecoin dependencies
 DEPENDS += \
