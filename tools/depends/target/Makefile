@@ -28,6 +28,7 @@ DEPENDS += \
   hat-trie \
   libp2p \
   protobuf \
+  soralog \
   sqlite-modern-cpp \
   yaml-cpp \
 
