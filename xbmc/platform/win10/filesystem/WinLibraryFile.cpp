@@ -109,7 +109,7 @@ ssize_t CWinLibraryFile::Read(void* lpBuf, size_t uiBufSize)
   catch (const winrt::hresult_error& ex)
   {
     using KODI::PLATFORM::WINDOWS::FromW;
-    CLog::LogF(LOGERROR, "unable to read file ({})", FromW(ex.message()));
+    CLog::LogF(LOGERROR, "unable to read file ({})", winrt::to_string(ex.message()));
     return -1;
   }
 }
@@ -130,7 +130,7 @@ ssize_t CWinLibraryFile::Write(const void* lpBuf, size_t uiBufSize)
   catch (const winrt::hresult_error& ex)
   {
     using KODI::PLATFORM::WINDOWS::FromW;
-    CLog::LogF(LOGERROR, "unable write to file ({})", FromW(ex.message()));
+    CLog::LogF(LOGERROR, "unable write to file ({})", winrt::to_string(ex.message()));
     return -1;
   }
 }
