@@ -44,14 +44,16 @@ constexpr auto BADGE_NAME = "BadgeName";
 constexpr int RESPORNSE_SIZE = 64;
 } // namespace
 
-std::unordered_map<unsigned, std::vector<std::string>> CCheevos::m_activatedCheevoMap;
-
 CCheevos::CCheevos(GAME::CGameClient* gameClient,
                    const std::string& userName,
                    const std::string& loginToken)
   : m_gameClient(gameClient), m_userName(userName), m_loginToken(loginToken)
 {
   m_gameClient->Cheevos().SetRetroAchievementsCredentials(m_userName.c_str(), m_loginToken.c_str());
+}
+
+CCheevos::~CCheevos() {
+  m_gameClient->SetCheevos(nullptr);
 }
 
 void CCheevos::ResetRuntime()
@@ -156,7 +158,7 @@ void CCheevos::EnableRichPresence()
   m_richPresenceScript.clear();
 }
 
-void CCheevos::ActivateAchievement()
+void CCheevos::ActivateAchievements()
 {
   if (m_activatedCheevoMap.empty())
   {
@@ -174,8 +176,8 @@ void CCheevos::ActivateAchievement()
   {
     m_gameClient->Cheevos().ActivateAchievement(it.first, it.second[0].c_str());
   }
-  //call for checking triggered achievement
-  CheckTriggeredAchievement();
+
+  m_gameClient->SetCheevos(this);
 }
 
 std::string CCheevos::GetRichPresenceEvaluation()
@@ -213,19 +215,14 @@ RConsoleID CCheevos::ConsoleID()
   return it->second;
 }
 
-void CCheevos::Callback_URL_ID(const char* achievementUrl, unsigned int cheevoId)
+void CCheevos::AwardAchievement(const char* achievementUrl, unsigned cheevoId)
 {
-  XFILE::CCurlFile curl;
-  std::string res;
-  curl.Get(achievementUrl, res);
-  std::string description = m_activatedCheevoMap[cheevoId][1];
-  std::string header = std::string("Congratulations, ") + std::string("Achievement Unlocked");
+    XFILE::CCurlFile curl;
+    std::string res;
+    curl.Get(achievementUrl, res);
+    std::string description = m_activatedCheevoMap[cheevoId][1];
+    std::string header =
+          std::string("Congratulations, ") + std::string("Achievement Unlocked");
 
-  CGUIDialogKaiToast::QueueNotification(CGUIDialogKaiToast::Info, header, description);
-}
-
-void CCheevos::CheckTriggeredAchievement()
-{
-  // Callback for triggered achievement URL and ID
-  m_gameClient->Cheevos().GetAchievement_URL_ID(Callback_URL_ID);
+    CGUIDialogKaiToast::QueueNotification(CGUIDialogKaiToast::Info, header, description);
 }

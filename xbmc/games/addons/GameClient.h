@@ -25,6 +25,7 @@ namespace KODI
 {
 namespace RETRO
 {
+class CCheevos;
 class IStreamManager;
 }
 
@@ -210,6 +211,9 @@ private:
   static void cb_close_stream(KODI_HANDLE kodiInstance, KODI_GAME_STREAM_HANDLE stream);
   static game_proc_address_t cb_hw_get_proc_address(KODI_HANDLE kodiInstance, const char* sym);
   static bool cb_input_event(KODI_HANDLE kodiInstance, const game_input_event* event);
+  static void cb_award_achievement(KODI_HANDLE kodiInstance,
+                                   const char* achievementUrl,
+                                   unsigned cheevoId); 
   //@}
 
   // Game subsystems
@@ -236,6 +240,8 @@ private:
   std::unique_ptr<CGameClientInGameSaves> m_inGameSaves;
 
   CCriticalSection m_critSection;
+
+  RETRO::CCheevos* m_cheevos;
 };
 
 } // namespace GAME

@@ -1085,19 +1085,6 @@ public:
   }
 
   //============================================================================
-  /// @brief Get the achievement URL and ID
-  ///
-  /// @param[in] callback A callback that receives the URL and ID
-  ///
-  /// @return the error, or @ref GAME_ERROR_NO_ERROR if the call was successful
-  ///
-  virtual GAME_ERROR GetCheevo_URL_ID(void (*callback)(const char* achievementUrl,
-                                                       unsigned cheevoId))
-  {
-    return GAME_ERROR_NOT_IMPLEMENTED;
-  }
-
-  //============================================================================
   /// @brief Resets the runtime. Must be called each time a new rom is starting
   ///        and when the savestate is changed
   ///
@@ -1105,6 +1092,12 @@ public:
   ///         successfully
   ///
   virtual GAME_ERROR RCResetRuntime() { return GAME_ERROR_NOT_IMPLEMENTED; }
+
+  void AwardAchievement(const char* achievementUrl, unsigned cheevoId)
+  {
+    m_instanceData->toKodi->AwardAchievement(m_instanceData->toKodi->kodiInstance, achievementUrl,
+                                             cheevoId);
+  }
 
   //----------------------------------------------------------------------------
 
@@ -1154,7 +1147,6 @@ private:
     instance->game->toAddon->RCEnableRichPresence = ADDON_RCEnableRichPresence;
     instance->game->toAddon->RCGetRichPresenceEvaluation = ADDON_RCGetRichPresenceEvaluation;
     instance->game->toAddon->ActivateAchievement = ADDON_ActivateAchievement;
-    instance->game->toAddon->GetCheevo_URL_ID = ADDON_GetCheevo_URL_ID;
     instance->game->toAddon->RCResetRuntime = ADDON_RCResetRuntime;
 
     instance->game->toAddon->FreeString = ADDON_FreeString;
@@ -1472,14 +1464,6 @@ private:
   {
     return static_cast<CInstanceGame*>(instance->toAddon->addonInstance)
         ->ActivateAchievement(cheevoId, memaddr);
-  }
-
-  inline static GAME_ERROR ADDON_GetCheevo_URL_ID(const AddonInstance_Game* instance,
-                                                  void (*callback)(const char* achievementUrl,
-                                                                   unsigned cheevoId))
-  {
-    return static_cast<CInstanceGame*>(instance->toAddon->addonInstance)
-        ->GetCheevo_URL_ID(callback);
   }
 
   inline static GAME_ERROR ADDON_RCResetRuntime(const AddonInstance_Game* instance)

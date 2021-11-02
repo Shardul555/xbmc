@@ -34,11 +34,8 @@ public:
   void EnableRichPresence();
   std::string GetRichPresenceEvaluation();
 
-  void ActivateAchievement();
-  static void Callback_URL_ID(const char* achievementUrl, unsigned int cheevoId);
-  void CheckTriggeredAchievement();
-
-  static std::unordered_map<unsigned, std::vector<std::string>> m_activatedCheevoMap;
+  void ActivateAchievements();
+  void AwardAchievement(const char* achievementUrl, unsigned cheevoId);
 
 private:
   bool LoadData();
@@ -52,6 +49,8 @@ private:
   uint32_t m_gameID{};
   RConsoleID m_consoleID = RConsoleID::RC_INVALID_ID;
   bool m_richPresenceLoaded{};
+
+  std::unordered_map<unsigned, std::vector<std::string>> m_activatedCheevoMap;
 
   const std::map<std::string, RConsoleID> m_extensionToConsole = {
       {".a26", RConsoleID::RC_CONSOLE_ATARI_2600},
