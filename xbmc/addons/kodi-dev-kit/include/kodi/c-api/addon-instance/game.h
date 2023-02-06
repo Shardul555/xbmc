@@ -1151,6 +1151,9 @@ extern "C"
     void (*CloseStream)(KODI_HANDLE, KODI_GAME_STREAM_HANDLE);
     game_proc_address_t (*HwGetProcAddress)(KODI_HANDLE kodiInstance, const char* symbol);
     bool (*InputEvent)(KODI_HANDLE kodiInstance, const struct game_input_event* event);
+    void (*AwardAchievement)(KODI_HANDLE kodiInstance,
+                             const char* achievementUrl,
+                             unsigned cheevoId);
   } AddonToKodiFuncTable_Game;
 
   /*!
@@ -1215,8 +1218,6 @@ extern "C"
     GAME_ERROR(__cdecl* RCGetRichPresenceEvaluation)
     (const AddonInstance_Game*, char**, unsigned int);
     GAME_ERROR(__cdecl* ActivateAchievement)(const AddonInstance_Game*, unsigned int, const char*);
-    GAME_ERROR(__cdecl* GetCheevo_URL_ID)
-    (const AddonInstance_Game*, void (*)(const char*, unsigned int));
     GAME_ERROR(__cdecl* RCResetRuntime)(const AddonInstance_Game*);
     void(__cdecl* FreeString)(const AddonInstance_Game*, char*);
   } KodiToAddonFuncTable_Game;
